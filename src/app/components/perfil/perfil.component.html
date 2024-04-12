@@ -1,0 +1,38 @@
+<div class="flex h-[calc(100vh-74px)]">
+    <!-- Sidebar -->
+    <aside class="bg-gray-800 text-gray-100 flex flex-col justify-between w-48">
+        <!-- Logo o Título -->
+        <div class="py-4 px-6">
+            <h1 class="text-lg font-bold">Mi App</h1>
+        </div>
+        <!-- Opciones del Sidebar -->
+        <nav class="flex-1">
+            <ul class="space-y-4">
+                <li>
+                    <a [routerLink]="'/perfil/informacion'" class="block py-2 px-6 hover:bg-gray-700">Información</a>
+                </li>
+                <li>
+                    <a [routerLink]="'/perfil/mis-productos'" class="block py-2 px-6 hover:bg-gray-700">Mis productos</a>
+                </li>
+                <li>
+                    <a [routerLink]="'/perfil/mis-likes'" class="block py-2 px-6 hover:bg-gray-700">Mis likes</a>
+                </li>
+                <li>
+                    <a [routerLink]="'/perfil/chats'" class="block py-2 px-6 hover:bg-gray-700">Chats</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Cerrar Sesión -->
+        <div class="py-4 px-6">
+            <a href="#" class="block py-2 px-6 bg-red-600 hover:bg-red-700 text-center font-bold">Cerrar sesión</a>
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 p-8">
+        <!-- Aquí va el contenido principal de tu página -->
+        <!-- <h2 class="text-2xl font-bold mb-4">Contenido Principal</h2> -->
+        <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec nisi sit amet libero fermentum vulputate. Integer posuere, odio vel porta tempus, est leo rhoncus ligula, vel fermentum lorem est vel magna. Donec bibendum enim quis purus consectetur venenatis. Ut sollicitudin purus id est rhoncus, id fermentum dui eleifend.</p> -->
+        <router-outlet></router-outlet>
+    </main>
+</div>

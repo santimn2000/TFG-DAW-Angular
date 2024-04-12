@@ -1,0 +1,17 @@
+<!-- Navbar -->
+<div class=" flex items-center py-2 border-b border-t border-gray-300">
+    <button class="px-4 py-2 text-blue-500 ml-10" (click)="toggleCategories()">
+      Categorías
+    </button>
+  </div>
+
+  <!-- Sidebar de Filtros -->
+  <div class="sidebar">
+    <!-- Contenido del Sidebar -->
+  </div>
+
+  <div>
+    <app-menu-categorias *ngIf="showCategories"></app-menu-categorias>
+  </div>
+
+  <app-lista-prods></app-lista-prods>

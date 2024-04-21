@@ -18,6 +18,9 @@ import { CompromisoComponent } from './components/compromiso/compromiso.componen
 import { ContactanosComponent } from './components/contactanos/contactanos.component';
 import { AddProductoFormComponent } from './components/add-producto-form/add-producto-form.component';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RegistroModalComponent } from './components/registro-modal/registro-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -35,12 +38,15 @@ import { HttpClientModule } from '@angular/common/http';
     CompromisoComponent,
     ContactanosComponent,
     AddProductoFormComponent,
+    RegistroModalComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FontAwesomeModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

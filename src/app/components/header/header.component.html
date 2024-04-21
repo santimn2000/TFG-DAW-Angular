@@ -20,7 +20,10 @@
       <button class="px-4 py-2 bg-blue-500 text-white rounded-md ml-2" [routerLink]="'addProd'">
         Añadir
       </button>
-      <button class="px-4 py-2 bg-blue-500 text-white rounded-md ml-2" [routerLink]="'perfil'">
+      <button *ngIf="!jwtToken" class="px-4 py-2 bg-blue-500 text-white rounded-md ml-2" (click)="openLoginModal()">
+        Iniciar Sesión
+      </button>
+      <button *ngIf="jwtToken" class="px-4 py-2 bg-blue-500 text-white rounded-md ml-2" [routerLink]="'perfil'">
         <i class="fa fa-user" ></i>
       </button>
     </div>

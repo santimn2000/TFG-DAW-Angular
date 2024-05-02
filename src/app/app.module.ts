@@ -21,6 +21,29 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RegistroModalComponent } from './components/registro-modal/registro-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatMenuModule } from '@angular/material/menu';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSliderModule } from '@angular/material/slider';
+import {MatListModule} from '@angular/material/list';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatRadioModule} from '@angular/material/radio';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+
+import { JwtModule } from '@auth0/angular-jwt';
+import { VerProductoComponent } from './components/ver-producto/ver-producto.component';
+import { VerUsuarioComponent } from './components/ver-usuario/ver-usuario.component';
+import { RegistroUsuarioComponent } from './components/registro-usuario/registro-usuario.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatNativeDateModule } from '@angular/material/core';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +62,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     ContactanosComponent,
     AddProductoFormComponent,
     RegistroModalComponent,
+    VerProductoComponent,
+    VerUsuarioComponent,
+    RegistroUsuarioComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +73,35 @@ import { MatDialogModule } from '@angular/material/dialog';
     FontAwesomeModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatMenuModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    FlexLayoutModule,
+    MatSidenavModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSliderModule,
+    MatListModule,
+    MatToolbarModule,
+    MatRadioModule,
+    MatStepperModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatOptionModule,
+    MatSelectModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token');
+        }
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

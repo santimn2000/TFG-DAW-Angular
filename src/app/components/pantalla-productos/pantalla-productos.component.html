@@ -1,17 +1,67 @@
-<!-- Navbar -->
-<div class=" flex items-center py-2 border-b border-t border-gray-300">
-    <button class="px-4 py-2 text-blue-500 ml-10" (click)="toggleCategories()">
-      Categorías
-    </button>
+<div class="overflow-auto  border-b border-t border-gray-300 flex flex-col ">
+
+  <mat-toolbar color="primary" class="example-toolbar mt-40 z-50 fixed">
+    <button mat-button (click)="openFiltersSidebar()">Filtros</button>
+
+    <button mat-button [matMenuTriggerFor]="categoriasMenu">Categorías</button>
+  </mat-toolbar>
+
+  <div class="flex">
+    <!-- aside -->
+    <aside class="flex w-75 flex-col space-y-2 border-r-2 border-gray-200 bg-white p-2 fixed" *ngIf="showFiltersSidebar" style="height: 100vh">
+
+      <div class="flex flex-col items-center mt-20 px-2 py-3 bg-gray-100">
+        <mat-radio-group aria-label="Select an option">
+          <mat-radio-button value="1">Option 1</mat-radio-button>
+          <mat-radio-button value="2">Option 2</mat-radio-button>
+        </mat-radio-group>
+        <mat-slider min="0" max="100000" step="1000" showTickMarks discrete>
+          <input matSliderThumb>
+        </mat-slider>
+        <mat-slider min="0" max="9999" step="50" showTickMarks discrete>
+          <input value="300" matSliderStartThumb>
+          <input value="400" matSliderEndThumb>
+        </mat-slider>
+      </div>
+      <!-- <a href="#" class=" space-x-1 rounded-mdhover: hover:text-blue-600">
+        <span class="text-2xl"><i class="bx bx-home"></i></span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="#" class="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600">
+        <span class="text-2xl"><i class="bx bx-cart"></i></span>
+        <span>Cart</span>
+      </a>
+
+      <a href="#" class="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600">
+        <span class="text-2xl"><i class="bx bx-shopping-bag"></i></span>
+        <span>Shopping</span>
+      </a>
+
+      <a href="#" class="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600">
+        <span class="text-2xl"><i class="bx bx-heart"></i></span>
+        <span>My Favourite</span>
+      </a>
+
+      <a href="#" class="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600">
+        <span class="text-2xl"><i class="bx bx-user"></i></span>
+        <span>Profile</span>
+      </a> -->
+    </aside>
+
+    <!-- main content page -->
+    <div class="w-full ml-40 mt-20 p-4 overflow-auto">
+      <app-lista-prods></app-lista-prods>
+    </div>
   </div>
 
-  <!-- Sidebar de Filtros -->
-  <div class="sidebar">
-    <!-- Contenido del Sidebar -->
-  </div>
+  <!-- Categorías Menu -->
+  <mat-menu #categoriasMenu="matMenu">
+    <ng-container class="flex flex-row" *ngFor="let categoria of categorias">
+      <button mat-menu-item>
+        {{ categoria.nombre }}
+      </button>
+    </ng-container>
+  </mat-menu>
 
-  <div>
-    <app-menu-categorias *ngIf="showCategories"></app-menu-categorias>
-  </div>
-
-  <app-lista-prods></app-lista-prods>
+</div>

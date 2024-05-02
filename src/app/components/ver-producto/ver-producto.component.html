@@ -1,0 +1,39 @@
+<div class="container mx-auto py-8">
+    
+    <div *ngIf="producto && usuarioVendedor" class="bg-white rounded-lg shadow-md p-4" fxLayout="flex" fxLayoutAlign="space-between">
+        <div id="infoProd">
+            <h2 class="text-2xl font-bold mb-4">{{ producto.nombre }}</h2>
+            <span>
+                <button mat-icon-button (click)="toggleLike()">
+                  <mat-icon>{{ isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
+                </button>
+              </span>
+            <p class="text-gray-700 mb-2">Precio: {{ producto.precio | currency }}</p>
+            <a class="text-gray-700 mb-2" [routerLink]="'/infoUsuario'" (click)="guardarIdUsuario(usuarioVendedor._id)">
+                Creado por: {{ usuarioVendedor.nombre }} {{ usuarioVendedor.apellidos }}
+              </a>
+            <p class="text-gray-700 mb-2">Categoria: {{ producto.categoria_principal }}</p>
+            <p class="text-gray-700 mb-2">Categorias secundarias: TODO</p>
+            <div class="bg-red rounded-lg shadow-md p-4">
+                <p>Características</p>
+                <div *ngFor="let caracteristica of producto.caracteristicas | keyvalue" class="flex items-center">
+                    <span class="font-semibold mr-2">{{ caracteristica.key }}:</span>
+                    <span>{{ caracteristica.value }}</span>
+                </div>
+            </div>
+            <p class="text-gray-700 mb-2">Descripcion: {{ producto.descripcion }}</p>
+        </div>
+
+        <div id="imgsProd" fxLayout="column" fxLayoutAlign="center">
+            <img [src]="producto.imagenes[0] ? 'data:image/jpeg;base64,' + producto.imagenes[0] : img_default" alt="prueba" class="w-full h-64 object-cover rounded-t-lg">
+            <p class="text-gray-700 text-center mb-2">Precio: {{ producto.precio }}</p>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Contactar
+            </button>
+        </div>
+        <!-- Aquí puedes mostrar más detalles del producto -->
+    </div>
+    <div *ngIf="!producto" class="text-center">
+        <p class="text-2xl font-bold mb-4">Cargando producto...</p>
+    </div>
+</div>

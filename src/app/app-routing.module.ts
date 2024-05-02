@@ -10,6 +10,9 @@ import { MisLikesComponent } from './components/mis-likes/mis-likes.component';
 import { ContactanosComponent } from './components/contactanos/contactanos.component';
 import { CompromisoComponent } from './components/compromiso/compromiso.component';
 import { AddProductoFormComponent } from './components/add-producto-form/add-producto-form.component';
+import { VerProductoComponent } from './components/ver-producto/ver-producto.component';
+import { VerUsuarioComponent } from './components/ver-usuario/ver-usuario.component';
+import { RegistroUsuarioComponent } from './components/registro-usuario/registro-usuario.component';
 
 const routes: Routes = [
   {path: 'home', component: PantallaProductosComponent},
@@ -27,7 +30,9 @@ const routes: Routes = [
       { path: '', redirectTo: 'informacion', pathMatch: 'full' } // Ruta predeterminada dentro del perfil
     ]
   },
-  
+  {path: 'infoProducto', component: VerProductoComponent},
+  {path: 'infoUsuario', component: VerUsuarioComponent},
+  {path: 'registro', component: RegistroUsuarioComponent},
   {path: '**', redirectTo: 'home', pathMatch: 'full'},
   
   

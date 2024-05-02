@@ -1,0 +1,7 @@
+.scrollable-list {
+   overflow-y: auto;
+ }
+
+ .overflow-hidden{
+   overflow:hidden;
+ }

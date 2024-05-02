@@ -9,6 +9,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string) {
+    console.log("User: ", username + " Password: "+ password)
     return this.http.post<any>('http://localhost:7000/login', { username, password });
   }
 }

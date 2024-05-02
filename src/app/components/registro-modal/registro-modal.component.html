@@ -1,33 +1,32 @@
-
 <div class="w-full max-w-xs mx-auto">
-    <h2>Iniciar Sesión</h2>
-    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-          Nombre de usuario
-        </label>
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Nombre de usuario">
-      </div>
-      <div class="mb-6">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-          Contraseña
-        </label>
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="************">
-      </div>
-      <div class="flex items-center justify-between">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-          Iniciar Sesión
-        </button>
-        <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
-          Olvidaste tu contraseña?
-        </a>
-      </div>
-    </form>
-    <a href="#" (click)="close()">Registrate</a>
-    <p class="text-center text-gray-500 text-xs">
-      &copy;2024 Wallapp. Todos los derechos reservados.
-    </p>
-
+  <h2>Iniciar Sesión</h2>
+  <form [formGroup]="loginForm">
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Nombre de usuario</label>
+      <input formControlName="username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Nombre de usuario">
+      <div *ngIf="loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched" class="text-red-500 text-xs mt-1">Campo requerido</div>
+    </div>
+    <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Contraseña</label>
+      <input formControlName="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="************">
+      <div *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched" class="text-red-500 text-xs mt-1">Campo requerido</div>
+    </div>
+    <div *ngIf="credencialesIncorrectas" class="text-red-500 mt-2">Credenciales incorrectas</div>
+    <div class="flex items-center justify-evenly">
+      
+      <button (click)="login()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+        Iniciar Sesión
+      </button>
+      <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+        Olvidaste tu contraseña?
+      </a>
+    </div>
+  </form>
+  
+  <div class="text-center">
+    <a (click)="registrarse()">Registrate</a>
   </div>
-
-
+  <p class="text-center text-gray-500 text-xs">
+    &copy;2024 Wallapp. Todos los derechos reservados.
+  </p>
+</div>

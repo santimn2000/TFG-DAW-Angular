@@ -2,9 +2,9 @@
     Hello world!
 </h1> -->
 
-<div class="common-component">
+<div class="common-component" >
   <!-- Encabezado -->
-  <div class="flex items-center justify-between py-4">
+  <div class="flex items-center justify-between py-4 negro" >
     <div class="text-lg font-bold">
       <button [routerLink]="'home'">WALLAPP</button>
     </div>
@@ -23,13 +23,16 @@
       <button *ngIf="!jwtToken" class="px-4 py-2 bg-blue-500 text-white rounded-md ml-2" (click)="openLoginModal()">
         Iniciar Sesión
       </button>
-      <button *ngIf="jwtToken" class="px-4 py-2 bg-blue-500 text-white rounded-md ml-2" [routerLink]="'perfil'">
-        <i class="fa fa-user" ></i>
+      <button mat-icon-button [matMenuTriggerFor]="perfilMenu" *ngIf="jwtToken" class="px-3 py-2 bg-blue-500 text-white rounded-md ml-2">
+        <mat-icon>account_circle</mat-icon>
       </button>
+      <mat-menu #perfilMenu="matMenu" xPosition="before">
+        <button mat-menu-item [routerLink]="'perfil'">Perfil</button>
+        <button mat-menu-item (click)="cerrar_sesion()" [routerLink]="'home'">Cerrar sesión</button>
+      </mat-menu>
+      
     </div>
   </div>
-
-  
 
 
 </div>

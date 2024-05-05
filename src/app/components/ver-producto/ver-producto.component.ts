@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/product.service';
 import { UserService } from '../../services/user.service';
+import Swiper from 'swiper';
 
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -125,5 +126,16 @@ export class VerProductoComponent {
   guardarIdUsuario(idUsuario: string): void {
     // Guardar el _id en sessionStorage
     sessionStorage.setItem('usuarioId', idUsuario);
+  }
+
+  ngAfterViewInit(): void {
+    const swiper = new Swiper('.swiper-container', {
+      // Opciones de configuración de Swiper.js, por ejemplo:
+      loop: true, // Para hacer el carrusel infinito
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
   }
 }

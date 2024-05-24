@@ -1,1 +1,38 @@
-<p>chats works!</p>
+<div class="container">
+  <div class="flex justify-evenly">
+    <div class="">
+      <ul>
+        <li *ngFor="let contact of contacts"
+          (click)="selectContact(contact._id, contact.id_usuario, contact.id_producto)">
+          Producto:{{ contact.nomProd }}
+        </li>
+      </ul>
+    </div>
+    <div class="flex flex-col">
+      <div class="messages" *ngIf="selectedContact">
+        <div>
+          Chat con {{ usuario2.username }}
+        </div>
+        <div class="chat-container">
+
+          <div *ngIf="messages">
+
+            <div class="chat flex-cols" *ngFor="let mensaje of messages">
+              <div *ngIf="mensaje.id_usuario == usuario1._id" class="text-right">
+                {{ usuario1.username }}: {{ mensaje.texto}}
+              </div>
+              <div *ngIf="mensaje.id_usuario != usuario1._id">
+                {{ usuario2.username }}: {{ mensaje.texto}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <input type="text" [(ngModel)]="newMessage" placeholder="Escribe un mensaje...">
+          <button type="submit" (click)="enviarMensaje()">Enviar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

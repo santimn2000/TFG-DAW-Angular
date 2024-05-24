@@ -58,4 +58,11 @@ export class MisLikesComponent implements OnInit {
 
     }
   }
+
+  redirectToProductInfo(productId: string): void {
+    // Guardar el ID del producto en sessionStorage
+    sessionStorage.setItem('productId', productId);
+    // Redirigir a la ruta infoProducto
+    this.router.navigate(['/infoProducto']);
+  }
 }

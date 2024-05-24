@@ -20,10 +20,14 @@ export class VerProductoComponent {
   UserService: any;
   isLiked: boolean = false;
   token: string | null = null;
+  imagenes: string[] = [];
+
+  esMio: boolean = false;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private productService: ProductService, private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
   ngOnInit(): void {
+    this.showSlide(this.slideIndex);
     // Leer el ID del producto del sessionStorage
     const productId = sessionStorage.getItem('productId');
     this.token = localStorage.getItem('token');
@@ -36,6 +40,7 @@ export class VerProductoComponent {
         (response) => {
           // Asignar el producto obtenido
           this.producto = response;
+          this.imagenes = this.producto.imagenes;
           console.log('Detalles del producto:', response);
         },
         (error) => {
@@ -48,6 +53,14 @@ export class VerProductoComponent {
           this.usuarioVendedor = response;
           console.log('Detalles del usuarioVendedor:', response);
           
+          if(this.token){
+            decodedToken = this.jwtHelper.decodeToken(this.token);
+            userId = decodedToken.usuarioId;
+
+            if(this.usuarioVendedor._id == userId){
+              this.esMio = true;
+            }
+          }
         }
       )
       
@@ -69,6 +82,7 @@ export class VerProductoComponent {
             
           }
         )
+
       }
 
       
@@ -128,14 +142,18 @@ export class VerProductoComponent {
     sessionStorage.setItem('usuarioId', idUsuario);
   }
 
-  ngAfterViewInit(): void {
-    const swiper = new Swiper('.swiper-container', {
-      // Opciones de configuración de Swiper.js, por ejemplo:
-      loop: true, // Para hacer el carrusel infinito
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
+  slideIndex: number = 1;
+
+  moveSlide(moveStep: number) {
+    this.showSlide(this.slideIndex += moveStep);
+  }
+
+  currentSlide(n: number) {
+    this.showSlide(this.slideIndex = n);
+  }
+
+  showSlide(n: number) {
+    if (n > this.imagenes.length) { this.slideIndex = 1; }
+    if (n < 1) { this.slideIndex = this.imagenes.length; }
   }
 }

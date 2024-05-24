@@ -3,7 +3,7 @@
   
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4" >
       <!-- Iterar sobre cada producto y mostrarlo en una tarjeta -->
-      <div *ngFor="let producto of productos" class="bg-white rounded-lg shadow-md" id="{{ producto._id }}">
+      <div *ngFor="let producto of productos" class="bg-white rounded-lg shadow-md" id="{{ producto._id }}" (click)="redirectToProductInfo(producto._id)">
         <!-- Imagen del producto -->
         <img [src]="producto.imagenes[0] ? 'data:image/jpeg;base64,' + producto.imagenes[0] : 'assets/default.PNG'" alt="Imagen del Producto" class="w-full h-64 object-cover rounded-t-lg">
   

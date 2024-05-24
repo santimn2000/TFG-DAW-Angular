@@ -13,7 +13,7 @@ export class HeaderComponent {
 
   jwtToken!: string | null;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private router: Router) { }
 
   ngOnInit(): void {
     this.jwtToken = localStorage.getItem('token');
@@ -39,5 +39,17 @@ export class HeaderComponent {
   cerrar_sesion(): void{
     localStorage.removeItem('token');
     this.ngOnInit();
+  }
+
+  irAInicio(): void {
+    const currentRoute = this.router.url; // Obtener la ruta actual
+    sessionStorage.removeItem('query');
+
+    if (currentRoute === '/home') {
+      window.location.reload(); // Recargar la página si la ruta actual es '/home'
+    } else {
+      
+      this.router.navigate(['/home']); // Navegar a '/home' si la ruta actual no es '/home'
+    }
   }
 }

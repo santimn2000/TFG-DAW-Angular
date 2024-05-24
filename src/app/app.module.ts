@@ -36,6 +36,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete'
 
 import { JwtModule } from '@auth0/angular-jwt';
 import { VerProductoComponent } from './components/ver-producto/ver-producto.component';
@@ -95,6 +96,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
     MatNativeDateModule,
     MatOptionModule,
     MatSelectModule,
+    MatAutocompleteModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {

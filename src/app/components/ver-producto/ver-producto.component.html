@@ -1,27 +1,22 @@
 <div class="container mx-auto py-8">
-    
+
+  <div fxLayout="column" *ngIf="producto">
     <div *ngIf="producto && usuarioVendedor" class="bg-white rounded-lg shadow-md p-4" fxLayout="flex" fxLayoutAlign="space-between">
-        <div id="infoProd">
+        <div id="infoProd" fxLayout="column">
             <h2 class="text-2xl font-bold mb-4">{{ producto.nombre }}</h2>
             <span>
-                <button *ngIf="!esMio" mat-icon-button (click)="toggleLike()">
-                  <mat-icon>{{ isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
-                </button>
-              </span>
-            <p class="text-gray-700 mb-2">Precio: {{ producto.precio | currency }}</p>
+              <button *ngIf="!esMio && usuario" mat-icon-button (click)="toggleLike()">
+                <mat-icon>{{ isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
+              </button>
+            </span>
+
             <a class="text-gray-700 mb-2" [routerLink]="'/infoUsuario'" (click)="guardarIdUsuario(usuarioVendedor._id)">
                 Creado por: {{ usuarioVendedor.nombre }} {{ usuarioVendedor.apellidos }}
-              </a>
+            </a>
             <p class="text-gray-700 mb-2">Categoria: {{ producto.categoria_principal }}</p>
-            <p class="text-gray-700 mb-2">Categorias secundarias: TODO</p>
-            <div class="bg-red rounded-lg shadow-md p-4">
-                <p>Características</p>
-                <div *ngFor="let caracteristica of producto.caracteristicas | keyvalue" class="flex items-center">
-                    <span class="font-semibold mr-2">{{ caracteristica.key }}:</span>
-                    <span>{{ caracteristica.value }}</span>
-                </div>
-            </div>
-            <p class="text-gray-700 mb-2">Descripcion: {{ producto.descripcion }}</p>
+            <p class="text-gray-700 mb-2">Envio disponible: {{ producto.envio_disponible ? 'Sí':'No' }}</p>
+
+
         </div>
 
         <div id="imgsProd" fxLayout="column" fxLayoutAlign="center">
@@ -31,11 +26,11 @@
                   <img class="w-full h-[300px] object-cover" [src]="'data:image/jpeg;base64,' + imagen">
                   <div class="absolute bottom-0 w-full bg-black/40 text-center text-white"></div>
                 </div>
-            
+
                 <!-- The previous button -->
                 <a class="absolute left-0 top-1/2 p-4 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white hover:text-amber-500 cursor-pointer"
                    (click)="moveSlide(-1)">❮</a>
-            
+
                 <!-- The next button -->
                 <a class="absolute right-0 top-1/2 p-4 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white hover:text-amber-500 cursor-pointer"
                    (click)="moveSlide(1)">❯</a>
@@ -47,19 +42,33 @@
             </div>
             <!-- <img [src]="producto.imagenes[0] ? 'data:image/jpeg;base64,' + producto.imagenes[0] : img_default" alt="prueba" class="w-full h-64 object-cover rounded-t-lg"> -->
             <p class="text-gray-700 text-center mb-2">Precio: {{ producto.precio }}</p>
-            <button *ngIf="!esMio" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button *ngIf="!esMio && !contactado" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="crearConexionEntreUsuarios()">
                 Contactar
             </button>
-            <button *ngIf="esMio" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Modificar
+            <button *ngIf="!esMio && contactado" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" [routerLink]="['/perfil/chats']">
+              Ir al chat
             </button>
-            <button *ngIf="esMio" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            <button *ngIf="esMio" (click)="eliminarProd()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
               Borrar
             </button>
         </div>
         <!-- Aquí puedes mostrar más detalles del producto -->
     </div>
-    <div *ngIf="!producto" class="text-center">
-        <p class="text-2xl font-bold mb-4">Cargando producto...</p>
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <p class="text-gray-700 text-lg mb-4"><strong>Descripción:</strong> {{ producto.descripcion }}</p>
+      <div class="bg-gray-100 rounded-lg shadow-inner p-4 mt-6">
+        <p class="text-xl font-bold mb-4">Características</p>
+        <div *ngFor="let caracteristica of producto.caracteristicas | keyvalue" class="flex items-center mb-2">
+          <div *ngIf="caracteristica.key != 'imagenes'" >
+            <span class="text-gray-700 font-semibold mr-2">{{ caracteristica.key }}:</span>
+            <span class="text-gray-600">{{ caracteristica.value }}</span>
+          </div>
+        </div>
+      </div>
     </div>
+
+  </div>
+  <div *ngIf="!producto" class="text-center">
+      <p class="text-2xl font-bold mb-4">Cargando producto...</p>
+  </div>
 </div>

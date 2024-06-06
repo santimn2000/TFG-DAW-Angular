@@ -45,6 +45,9 @@ import { RegistroUsuarioComponent } from './components/registro-usuario/registro
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { ModificarUsuarioComponent } from './components/modificar-usuario/modificar-usuario.component';
+import { DialogCookiesComponent } from './components/dialog-cookies/dialog-cookies.component';
+import { CookieService } from './services/cookie.service';
 
 @NgModule({
   declarations: [
@@ -67,6 +70,8 @@ import { DialogComponent } from './components/dialog/dialog.component';
     VerUsuarioComponent,
     RegistroUsuarioComponent,
     DialogComponent,
+    ModificarUsuarioComponent,
+    DialogCookiesComponent,
   ],
   imports: [
     BrowserModule,
@@ -105,7 +110,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
       }
     })
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [CookieService],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -12,6 +12,9 @@ export class UserService {
   getUserById(userId: string): Observable<any> {
     return this.http.get<any>(`http://localhost:7000/usuario/${userId}`);
   }
+  getLogoUserById(userId: string): Observable<any> {
+    return this.http.get<any>(`http://localhost:7000/usuario/logo/${userId}`);
+  }
   getUserByProductId(productId: string): Observable<any> {
     return this.http.get<any>(`http://localhost:7000/usuarioProd/${productId}`);
   }

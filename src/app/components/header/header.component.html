@@ -1,23 +1,29 @@
-<!-- <h1 class="bg-blue-500 text-white p-4 underline">
-    Hello world!
-</h1> -->
-
-<div class="common-component" >
+<div class="common-component">
   <!-- Encabezado -->
-  <div class="flex items-center justify-between py-4 negro" >
-    <div class="text-lg font-bold">
-      <button (click)="irAInicio()">RESTOCK</button>
+  <div class="flex items-center justify-between px-4 py-4 negro">
+    <!-- RESTOCK -->
+    <div class="flex items-center w-1/6">
+      <button (click)="irAInicio()" class="text-lg font-bold">RESTOCK</button>
     </div>
-    <div class="flex items-center">
-      <input type="text" placeholder="Buscar..."
-        class="px-4 py-2 mr-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
-      <button class="px-4 py-2 bg-blue-500 text-white rounded-md" [routerLink]="'compromiso'">
+    
+    <!-- Input de búsqueda y botón -->
+    <div class="flex items-center justify-center w-3/6">
+      <input type="text" placeholder="Buscar..." [(ngModel)]="nombre"
+        class="px-4 py-2 mr-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 w-3/4" />
+      <button class="px-4 py-2 bg-blue-500 text-white rounded-md" (click)="buscarPorNombre()">
+        Buscar
+      </button>
+    </div>
+    
+    <!-- Otros botones -->
+    <div class="flex items-center w-2/6 justify-end">
+      <button class="px-4 py-2 bg-blue-500 text-white rounded-md ml-2" [routerLink]="'compromiso'">
         Compromiso
       </button>
       <button class="px-4 py-2 bg-blue-500 text-white rounded-md ml-2" [routerLink]="'contactanos'">
         Contactanos
       </button>
-      <button class="px-4 py-2 bg-blue-500 text-white rounded-md ml-2" [routerLink]="'addProd'">
+      <button class="px-4 py-2 bg-blue-500 text-white rounded-md ml-2" (click)="irAddProduct()">
         Añadir
       </button>
       <button *ngIf="!jwtToken" class="px-4 py-2 bg-blue-500 text-white rounded-md ml-2" (click)="openLoginModal()">
@@ -30,9 +36,6 @@
         <button mat-menu-item [routerLink]="'perfil'">Perfil</button>
         <button mat-menu-item (click)="cerrar_sesion()" [routerLink]="'home'">Cerrar sesión</button>
       </mat-menu>
-      
     </div>
   </div>
-
-
 </div>

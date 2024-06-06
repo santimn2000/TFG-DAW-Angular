@@ -1,12 +1,35 @@
 <div [style.background-color]="usuario.color" class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="max-w-md bg-white shadow-md rounded-md p-8">
-      <h2 class="text-2xl font-bold mb-4">Perfil de Usuario</h2>
+  <div class="max-w-md bg-white shadow-md rounded-md p-8 space-y-6">
+    <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">Perfil de Usuario</h2>
+    <div class="space-y-4">
       <div>
-        <p><strong class="text-gray-700">Nombre:</strong> {{ usuario.nombre }}</p>
-        <p><strong class="text-gray-700">Apellidos:</strong> {{ usuario.apellidos }}</p>
-        <p><strong class="text-gray-700">Correo:</strong> {{ usuario.correo }}</p>
-        <p><strong class="text-gray-700">Nombre de usuario:</strong> {{ usuario.username }}</p>
-        <p><strong class="text-gray-700">Fecha de nacimiento:</strong> {{ usuario.fecha_nacimiento | date:'dd/MM/yyyy' }}</p>
+        <p class="text-lg font-semibold text-gray-800">Nombre:</p>
+        <p class="text-gray-600">{{ usuario.nombre }}</p>
+      </div>
+      <div>
+        <p class="text-lg font-semibold text-gray-800">Apellidos:</p>
+        <p class="text-gray-600">{{ usuario.apellidos }}</p>
+      </div>
+      <div>
+        <p class="text-lg font-semibold text-gray-800">Correo:</p>
+        <p class="text-gray-600">{{ usuario.correo }}</p>
+      </div>
+      <div>
+        <p class="text-lg font-semibold text-gray-800">Nombre de usuario:</p>
+        <p class="text-gray-600">{{ usuario.username }}</p>
+      </div>
+      <div>
+        <p class="text-lg font-semibold text-gray-800">Fecha de nacimiento:</p>
+        <p class="text-gray-600">{{ usuario.fecha_nacimiento | date:'dd/MM/yyyy' }}</p>
       </div>
     </div>
+    <div class="flex justify-center mt-6">
+      <img class="w-full h-64 object-cover rounded-md" [src]="'data:image/jpeg;base64,' + logo" alt="Logo del usuario">
+    </div>
+    <div class="flex justify-center mt-6">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md" [routerLink]="'/perfil/modificarUsuario'">
+        Modificar perfil
+      </button>
+    </div>
   </div>
+</div>

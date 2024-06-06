@@ -3,84 +3,92 @@
       <!-- Paso 1: Información de usuario -->
       <mat-step>
         <ng-template matStepLabel>Información Usuario</ng-template>
-        <div class="container flex flex-col">
-          <mat-form-field>
-            <input matInput placeholder="Nombre" formControlName="nombre">
+        <div class="container flex flex-col space-y-3">
+          <div class="flex space-x-8">
+            <mat-form-field>
+              <input matInput placeholder="Nombre" formControlName="nombre">
 
-            <mat-error *ngIf="formGroup.get('nombre')?.errors?.['required']">
-              El nombre es requerido.
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput placeholder="Apellidos" formControlName="apellidos">
+              <mat-error *ngIf="formGroup.get('nombre')?.errors?.['required']">
+                El nombre es requerido.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Apellidos" formControlName="apellidos">
+              <mat-error *ngIf="formGroup.get('apellidos')?.errors?.['required']">
+                Los apellidos son requeridos.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker" placeholder="Fecha de nacimiento" formControlName="fecha_nacimiento">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
 
-            <mat-error *ngIf="formGroup.get('apellidos')?.errors?.['required']">
-              Los apellidos son requeridos.
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Fecha de nacimiento" formControlName="fecha_nacimiento">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="formGroup.get('fecha_nacimiento')?.errors?.['required']">
+                La fecha de nacimiento es requerida.
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('fecha_nacimiento')?.errors?.['dateOfBirth']">
+                Debes tener al menos 13 años de edad.
+              </mat-error>
 
-            <mat-error *ngIf="formGroup.get('fecha_nacimiento')?.errors?.['required']">
-              La fecha de nacimiento es requerida.
-            </mat-error>
-            <mat-error *ngIf="formGroup.get('fecha_nacimiento')?.errors?.['dateOfBirth']">
-              Debes tener al menos 13 años de edad.
-            </mat-error>
+            </mat-form-field>
+          </div>
 
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput placeholder="Correo" formControlName="correo">
+          <div class="flex w-1/3">
+            <mat-form-field>
+              <input matInput placeholder="Correo" formControlName="correo">
 
-            <mat-error *ngIf="formGroup.get('correo')?.errors?.['required']">
-              El correo es requerido.
-            </mat-error>
-            <mat-error *ngIf="formGroup.get('correo')?.errors?.['email']">
-              Formato de correo incorrecto
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput placeholder="Usuario" formControlName="username">
+              <mat-error *ngIf="formGroup.get('correo')?.errors?.['required']">
+                El correo es requerido.
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('correo')?.errors?.['email']">
+                Formato de correo incorrecto
+              </mat-error>
+            </mat-form-field>
+          </div>
 
-            <mat-error *ngIf="formGroup.get('username')?.errors?.['required']">
-              El nombre de usuario es requerido.
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput placeholder="Contraseña" formControlName="password" [type]="hide ? 'password' : 'text'">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
+          <div class="flex space-x-8">
+            <mat-form-field>
+              <input matInput placeholder="Usuario" formControlName="username">
 
-            <mat-error *ngIf="formGroup.get('password')?.errors?.['required']">
-              La contraseña es requerida.
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput placeholder="Confirma la contraseña" formControlName="confirmarPassword" [type]="hideConfirm ? 'password' : 'text'">
-            <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
-              <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-            <mat-error *ngIf="formGroup.get('confirmarPassword')?.errors?.['required']">
-              La confirmación de contraseña es requerida.
-            </mat-error>
-            <mat-error *ngIf="formGroup.get('confirmarPassword')?.errors?.['passwordMatch']">
-              Las contraseñas no coinciden.
-            </mat-error>
-          </mat-form-field>
+              <mat-error *ngIf="formGroup.get('username')?.errors?.['required']">
+                El nombre de usuario es requerido.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Contraseña" formControlName="password" [type]="hide ? 'password' : 'text'">
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+
+              <mat-error *ngIf="formGroup.get('password')?.errors?.['required']">
+                La contraseña es requerida.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Confirma la contraseña" formControlName="confirmarPassword" [type]="hideConfirm ? 'password' : 'text'">
+              <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
+                <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="formGroup.get('confirmarPassword')?.errors?.['required']">
+                La confirmación de contraseña es requerida.
+              </mat-error>
+              <mat-error *ngIf="formGroup.get('confirmarPassword')?.errors?.['passwordMatch']">
+                Las contraseñas no coinciden.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
         </div>
-        <div>
-          <button mat-button matStepperNext type="button">Next</button>
+        <div class="mt-10">
+          <button mat-button matStepperNext type="button">Siguiente paso</button>
         </div>
       </mat-step>
-  
+
       <!-- Paso 2: Imagen -->
       <mat-step>
         <ng-template matStepLabel>Imagen</ng-template>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
+        <div class="grid grid-cols-2 gap-4 w-3/4">
+          <div class="">
             <mat-form-field >
               <mat-label>Color</mat-label>
               <mat-select formControlName="color">
@@ -90,15 +98,15 @@
                 <mat-option value="green">Verde</mat-option>
               </mat-select>
             </mat-form-field>
-           
-              <input type="file" formControlName="logo" (change)="showPreview($event)">
-              
+            <br><br>
+            <input type="file" formControlName="logo" (change)="showPreview($event)">
+
           </div>
-          <div>
+          <div class="w-3/4">
             <div [ngClass]="{'border-black': formGroup.get('color')!.value === 'black',
             'border-red': formGroup.get('color')!.value === 'red',
             'border-blue': formGroup.get('color')!.value === 'blue',
-            'border-green': formGroup.get('color')!.value === 'green'}" 
+            'border-green': formGroup.get('color')!.value === 'green'}"
             class="border-2 border-solid p-4 h-80 flex items-center justify-center">
               <img *ngIf="formGroup.get('logo')?.value" [src]="imagePreview" alt="Preview" class="max-w-full max-h-full">
               <img *ngIf="!formGroup.get('logo')?.value" src="assets/default.PNG" alt="Default" class="max-w-full max-h-full">
@@ -111,12 +119,12 @@
           <button mat-button matStepperPrevious type="button">Back</button>
         </div>
       </mat-step>
-      
-  
+
+
       <!-- Paso 3: Dirección -->
       <mat-step>
         <ng-template matStepLabel>Dirección</ng-template>
-        <div class="flex flex-col">
+        <div class="flex flex-col w-1/3 space-y-8">
           <mat-label>Provincia</mat-label>
           <mat-form-field>
             <input matInput formControlName="provincia" placeholder="Provincia">
@@ -137,4 +145,3 @@
       </mat-step>
     </mat-horizontal-stepper>
   </form>
-  

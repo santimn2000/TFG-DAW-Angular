@@ -1,70 +1,97 @@
-<form [formGroup]="generalForm" enctype="multipart/form-data">
+<form [formGroup]="generalForm" enctype="multipart/form-data" (ngSubmit)="guardarProducto()">
     <mat-horizontal-stepper [linear]="true">
-        <mat-step [stepControl]="productoForm">
-            <ng-template matStepLabel>Datos del producto</ng-template>
-            <div [formGroup]="productoForm">
-                <div class="flex flex-col">
-                    <mat-form-field>
-                        <input matInput formControlName="nombre" placeholder="Nombre del producto">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Categoría</mat-label>
-                        <mat-select formControlName="categoria" placeholder="Seleccionar">
-                            <mat-option value="Motor">Motor</mat-option>
-                            <mat-option value="Tecnología">Tecnología</mat-option>
-                            <mat-option value="Entretenimiento">Entretenimiento</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <input matInput formControlName="precio" placeholder="Precio">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <textarea matInput formControlName="descripcion" placeholder="Descripción"></textarea>
-                    </mat-form-field>
-                    <div>
-                        <h4>Características</h4>
-                        <div formArrayName="caracteristicas">
-                            <div *ngFor="let caracteristica of caracteristicas.controls; let i = index"
-                                [formGroupName]="i">
-                                <mat-form-field>
-                                    <input matInput formControlName="nombre" placeholder="Nombre">
-                                </mat-form-field>
-                                <mat-form-field>
-                                    <input matInput formControlName="valor" placeholder="Valor">
-                                </mat-form-field>
-                                <button mat-icon-button color="warn" (click)="eliminarCaracteristica(i)">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </div>
-                        </div>
-                        <button mat-raised-button color="primary" type="button" (click)="agregarCaracteristica()">Añadir característica</button>
-                    </div>
-                    <div>
-                        <button mat-button matStepperNext type="button">Next</button>
-                    </div>
-                </div>
+      <mat-step [stepControl]="productoForm">
+        <ng-template matStepLabel>Datos del producto</ng-template>
+        <div [formGroup]="productoForm" class="w-3/4">
+          <div class="flex flex-col space-y-4">
+            <div class="flex space-x-4">
+              <mat-form-field class="flex-1">
+                <input matInput formControlName="nombre" placeholder="Nombre del producto">
+              </mat-form-field>
+              <mat-form-field class="flex-2">
+                <mat-label>Categoría</mat-label>
+                <mat-select formControlName="categoria" placeholder="Seleccionar">
+                  <mat-option *ngFor="let categoria of categorias" [value]="categoria.nombre">
+                    {{categoria.nombre}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="flex-2">
+                <mat-label>Envío disponible</mat-label>
+                <mat-select formControlName="envio_disponible" placeholder="Seleccionar">
+                  <mat-option value="0">Envio no disponible</mat-option>
+                  <mat-option value="1">Envio disponible</mat-option>
+                </mat-select>
+              </mat-form-field>
+              
             </div>
-        </mat-step>
+            <div class="flex space-x-4">
+              <mat-form-field class="flex-2">
+                <mat-label>Estado del producto</mat-label>
+                <mat-select formControlName="estado" placeholder="Seleccionar">
+                  <mat-option value="OPTIMO">Optimo</mat-option>
+                  <mat-option value="BUENO">Bueno</mat-option>
+                  <mat-option value="DESGASTADO">Desgastado</mat-option>
+                  <mat-option value="MAL ESTADO">Mal estado</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="flex-2">
+                <input matInput formControlName="precio" placeholder="Precio">
+              </mat-form-field>
+            </div>
+            <div class="flex space-x-4">
+              <mat-form-field class="w-3/4">
+                <textarea matInput formControlName="descripcion" placeholder="Descripción"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="">
+              <h4>Características</h4>
+              <div formArrayName="caracteristicas">
+                <div *ngFor="let caracteristica of caracteristicas.controls; let i = index" [formGroupName]="i" class="flex space-x-2 items-center w-2/5">
+                  <mat-form-field class="flex-1">
+                    <input matInput formControlName="nombre" placeholder="Nombre">
+                  </mat-form-field>
+                  <mat-form-field class="flex-1">
+                    <input matInput formControlName="valor" placeholder="Valor">
+                  </mat-form-field>
+                  <button mat-icon-button color="warn" (click)="eliminarCaracteristica(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <button mat-raised-button color="primary" type="button" (click)="agregarCaracteristica()">Añadir característica</button>
+            </div>
+            </div>
+            <div class="flex mt-10">
+              <button mat-button matStepperNext type="button">Siguiente paso</button>
+            </div>
+          </div>
+      </mat-step>
         <mat-step [stepControl]="imagenesForm">
             <ng-template matStepLabel>Imágenes del producto</ng-template>
             <div [formGroup]="imagenesForm">
                 <div class="flex">
+                  <div class="flex-cols">
                     <div>
                         <button mat-button type="button" (click)="agregarInputFile()">Añadir imagen</button>
                     </div>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div *ngFor="let imagen of imagenesPreview">
-                            <img [src]="imagen" class="w-full h-auto">
-                        </div>
+                    <div class="m-3" *ngFor="let input of inputsFile; let i = index">
+                      <input type="file" accept=".jpg,.png" (change)="onFileChange($event, i)" [id]="'fileInput' + i" />
                     </div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-4">
+                    <div *ngFor="let imagen of imagenesPreview">
+                        <img [src]="imagen" class="w-full h-auto">
+                    </div>
+                  </div>
                 </div>
-                <div *ngFor="let input of inputsFile">
-                    <input type="file" accept=".jpg,.png" (change)="onFileChange($event)">
-                </div>
+
+
             </div>
             <div>
-                <button mat-button matStepperPrevious type="button">Back</button>
-                <button mat-button type="submit">Submit</button>
+                <button mat-button matStepperPrevious type="button">Paso anterior</button>
+                <button mat-button type="submit">Crear producto</button>
             </div>
         </mat-step>
     </mat-horizontal-stepper>

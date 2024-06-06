@@ -1,5 +1,9 @@
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { ProductService } from 'src/app/product.service';
 
 @Component({
   selector: 'app-add-producto-form',
@@ -10,23 +14,46 @@ export class AddProductoFormComponent implements OnInit {
   generalForm: FormGroup;
   inputsFile: any[] = [];
   imagenesPreview: string[] = [];
+  userId: string = "";
+  categorias: any[] = [];
 
-  constructor(private fb: FormBuilder) { 
+  prueba: string = "Hola"
+
+  constructor(private fb: FormBuilder, private http: HttpClient, private productoService: ProductService, private router: Router, private jwtHelper: JwtHelperService) {
     this.generalForm = this.fb.group({
       productoForm: this.fb.group({
         nombre: ['', Validators.required],
         categoria: ['', Validators.required],
         precio: ['', [Validators.required, Validators.min(0)]],
+        envio_disponible: ['', Validators.required],
         descripcion: ['', Validators.required],
+        estado: ['', Validators.required],
         caracteristicas: this.fb.array([])
       }),
       imagenesForm: this.fb.group({})
     });
-  
+
   }
 
   ngOnInit(): void {
-    
+    const token = localStorage.getItem('token');
+
+    if (!token || this.jwtHelper.isTokenExpired(token)) {
+      this.router.navigate(['/home']);
+    }else{
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      this.userId = decodedToken.usuarioId;
+    }
+
+    this.http.get<any[]>('http://localhost:7000/categorias').subscribe(
+      categorias => {
+        this.categorias = categorias;
+        console.log('Categorías obtenidas:', categorias);
+      },
+      error => {
+        console.error('Error al obtener categorías:', error);
+      }
+    );
   }
 
   get productoForm(): FormGroup {
@@ -54,13 +81,14 @@ export class AddProductoFormComponent implements OnInit {
     this.inputsFile.push({});
   }
 
-  onFileChange(event: any) {
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.imagenesPreview.push(e.target.result);
+  onFileChange(event: any, index: number) {
+    const reader = new FileReader();
+    if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imagenesPreview[index] = reader.result as string;
       };
-      reader.readAsDataURL(event.target.files[0]);
     }
   }
 
@@ -69,11 +97,50 @@ export class AddProductoFormComponent implements OnInit {
   }
 
   guardarProducto() {
-    if (this.generalForm.valid ) {
-      // Lógica para guardar el producto
-      console.log('Producto guardado:', this.generalForm.value);
-    } else {
-      console.log('Formulario no válido');
-    }
+    console.log(this.productoForm.value)
+    const form = new FormData();
+    //const productoFormValues = this.productoForm.value;
+
+
+    form.append('nombre', this.productoForm.value.nombre);
+    form.append('categoria', this.productoForm.value.categoria);
+    form.append('precio', this.productoForm.value.precio);
+    form.append('descripcion', this.productoForm.value.descripcion);
+    form.append('envio_disponible', this.productoForm.value.envio_disponible)
+    form.append('estado', this.productoForm.value.estado);
+    form.append('id_usuario', this.userId); // Reemplaza esto con el ID de usuario real
+
+     // Añadir características al FormData
+     this.productoForm.value.caracteristicas.forEach((caracteristica: any, index: number) => {
+      form.append(`${caracteristica.nombre}`, `${caracteristica.valor}`);
+    });
+
+
+
+    this.inputsFile.forEach((input, index) => {
+      const fileInput = document.getElementById(`fileInput${index}`) as HTMLInputElement;
+      if (fileInput && fileInput.files) {
+        form.append('imagenes', fileInput.files[0]);
+      }
+    });
+
+    form.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+    this.productoService.registrarProducto(form).subscribe(
+      (response) => {
+        console.log(response)
+        //this.generalForm.reset();
+        this.imagenesPreview = [];
+        this.inputsFile = [];
+
+      },
+      (error) => {
+        console.error('Error registrando el producto:', error);
+
+      }
+    );
   }
 }
+

@@ -13,6 +13,7 @@ import { AddProductoFormComponent } from './components/add-producto-form/add-pro
 import { VerProductoComponent } from './components/ver-producto/ver-producto.component';
 import { VerUsuarioComponent } from './components/ver-usuario/ver-usuario.component';
 import { RegistroUsuarioComponent } from './components/registro-usuario/registro-usuario.component';
+import { ModificarUsuarioComponent } from './components/modificar-usuario/modificar-usuario.component';
 
 const routes: Routes = [
   {path: 'home', component: PantallaProductosComponent},
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: 'mis-productos', component: MisProductosComponent },
       { path: 'mis-likes', component: MisLikesComponent },
       { path: 'chats', component: ChatsComponent },
+      { path: 'modificarUsuario', component: ModificarUsuarioComponent },
       { path: '', redirectTo: 'informacion', pathMatch: 'full' } // Ruta predeterminada dentro del perfil
     ]
   },

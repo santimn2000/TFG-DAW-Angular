@@ -20,4 +20,13 @@ export class ProductService {
   getProductosByUserId(userId: string): Observable<any[]> {
     return this.http.get<any[]>(`http://localhost:7000/productos/usuario/${userId}`);
   }
+
+  registrarProducto(productoData: FormData): Observable<any> {
+    return this.http.post(`http://localhost:7000/producto`, productoData);
+  }
+
+  eliminarProducto(productId: string): Observable<any> {
+    const url = `${this.baseUrl}/producto/${productId}`;
+    return this.http.delete<any>(url);
+  }
 }

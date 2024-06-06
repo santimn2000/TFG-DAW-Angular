@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -14,9 +16,15 @@ import { Router } from '@angular/router';
 
 export class PantallaProductosComponent implements OnInit{
 
+  sesionIniciada: boolean = false;
+  usuario: any;
+  ciudadUsuario: string | null = null;
+
   productos: any[] = []; // Array para almacenar los productos
   img_default = "assets/default.PNG"
   paginaActual = 1;
+
+  procesando: boolean = false;
 
   categorias: any[] = [];
   showFiltersSidebar = false;
@@ -26,12 +34,16 @@ export class PantallaProductosComponent implements OnInit{
   estado: string = "";
   formaEnvio: string = "";
   provincia: string = "";
+  precioMinimo: number = 0;
+  precioMaximo: number = 99999;
+  ordenacion: string = "";
 
   queryCategoria: string = "";
   queryFiltros: string = "";
   queryNombre: string = "";
+  cadFiltros: string | null= null;
 
-  constructor(private http: HttpClient,  private router: Router) { 
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService, private userService: UserService,  private router: Router) {
     this.filteredProvincias = this.provinciaCtrl.valueChanges.pipe(
       startWith(''),
       map(value => this._filterProvincias(value))
@@ -39,14 +51,35 @@ export class PantallaProductosComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.obtenerProductos();
+    if(localStorage.getItem('token')){
+      this.sesionIniciada = true
+
+      const decodedToken = this.jwtHelper.decodeToken(localStorage.getItem('token')!);
+      const userId = decodedToken.usuarioId;
+      this.userService.getUserById(userId).subscribe(
+        response => {
+          console.log('Información del usuario:', response);
+          // Aquí puedes asignar la información del usuario a propiedades del componente
+          this.usuario = response
+          this.ciudadUsuario = this.usuario.direccion.ciudad;
+          this.obtenerProductos();
+        },
+        error => {
+          console.error('Error al obtener la información del usuario:', error);
+        }
+      );
+    }else{
+      this.sesionIniciada = false;
+      this.obtenerProductos();
+    }
+    
     this.http.get<any[]>('http://localhost:7000/categorias').subscribe(
       categorias => {
         this.categorias = categorias;
         console.log('Categorías obtenidas:', categorias);
       },
       error => {
-        console.error('Error al obtener categorías:', error); 
+        console.error('Error al obtener categorías:', error);
       }
     );
   }
@@ -75,10 +108,10 @@ export class PantallaProductosComponent implements OnInit{
 
   private _filterProvincias(value: string): string[] {
     const filterValue = this._normalize(value.toLowerCase());
-  
+
     return this.provincias.filter(provincia => this._normalize(provincia.toLowerCase()).includes(filterValue));
   }
-  
+
   private _normalize(str: string): string {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
@@ -93,7 +126,12 @@ export class PantallaProductosComponent implements OnInit{
 
     let prov = "";
     let estado = "";
-    let formaEnvio = "";
+    let envio_disponible = "";
+    let precioMin = "";
+    let precioMax = "";
+    let nombre = "";
+    let ordenacion = ""
+    let ciudadUsuario = ""
 
     if(this.provincia !== ""){
       prov = "provincia="+this.provincia
@@ -101,20 +139,51 @@ export class PantallaProductosComponent implements OnInit{
     if(this.estado !== "" ){
       estado = "estado="+this.estado
     }
+    if(this.precioMinimo !== null){
+      precioMin = "precioMin="+this.precioMinimo
+    }else{
+      precioMin = "precioMin=0"
+    }
+    if(this.precioMaximo !== null){
+      precioMax = "precioMax="+this.precioMaximo
+    }else{
+      precioMax = "precioMax=99999"
+    }
     if(this.formaEnvio !== ""){
-      formaEnvio = "envioDisponible="+this.formaEnvio
+      envio_disponible = "envio_disponible="+this.formaEnvio
+    }
+    if(this.ordenacion !== ""){
+      switch (this.ordenacion){
+        case "precioAsc": ordenacion = "sort=precio&orden=asc"; break;
+        case "precioDesc": ordenacion = "sort=precio&orden=desc"; break;
+        case "distanciaAsc": ordenacion = "sort=distancia&orden=asc"; break;
+        case "distanciaDesc": ordenacion = "sort=distancia&orden=desc"; break;
+      }
     }
 
-    this.queryFiltros = [prov, estado, formaEnvio].filter(Boolean).join('&');
-    console.log(this.queryFiltros)
+    if(this.sesionIniciada){
+      ciudadUsuario = "ciudadUsuario="+this.usuario.direccion.ciudad
+    }
+
+    if(sessionStorage.getItem('filtroNombre')){
+      nombre = "nombre="+sessionStorage.getItem('filtroNombre')!;
+    }
+
+    this.queryFiltros = [prov, estado, envio_disponible, precioMin, precioMax, nombre, ordenacion, ciudadUsuario].filter(Boolean).join('&');
+
     sessionStorage.setItem('query', `${this.queryCategoria}&${this.queryFiltros}&${this.queryNombre}`)
+    this.cadFiltros = 'Filtros: ' + sessionStorage.getItem('query');
+    console.log(sessionStorage.getItem('query'))
+
+    this.procesando = true
 
 
-    this.http.get<any[]>(`http://localhost:7000/productos/${this.paginaActual}/3?${sessionStorage.getItem('query')}`) 
+    this.http.get<any[]>(`http://localhost:7000/productos/${this.paginaActual}/3?${sessionStorage.getItem('query')}`)
       .subscribe(
         (data) => {
           this.productos.push(...data);
-          console.log(this.productos)
+          console.log(this.productos);
+          this.procesando = false
         },
         (error) => {
           console.error('Error al obtener los productos:', error);
@@ -124,33 +193,35 @@ export class PantallaProductosComponent implements OnInit{
 
   //////////////////////
 
- 
+
 
   obtenerProductos() {
-    if(sessionStorage.getItem('query')){
-      this.http.get<any[]>(`http://localhost:7000/productos/${this.paginaActual}/3?${sessionStorage.getItem('query')}`) 
-      .subscribe(
-        (data) => {
-          this.productos.push(...data);
-          console.log(this.productos)
-        },
-        (error) => {
-          console.error('Error al obtener los productos:', error);
-        }
-      );
-    }else{
-      this.http.get<any[]>(`http://localhost:7000/productos/${this.paginaActual}/3`) 
-      .subscribe(
-        (data) => {
-          this.productos.push(...data);
-          console.log(this.productos)
-        },
-        (error) => {
-          console.error('Error al obtener los productos:', error);
-        }
-      );
-    }
+    this.procesando = true;
     
+      let ciudadUsuario = ""
+      console.log(this.sesionIniciada)
+      if(this.sesionIniciada){
+        console.log(this.usuario.direccion.ciudad)
+        ciudadUsuario = "ciudadUsuario="+this.usuario.direccion.ciudad;
+        sessionStorage.setItem('query', `${this.queryCategoria}&${this.queryFiltros}&${this.queryNombre}&${ciudadUsuario}`);
+        this.cadFiltros = 'Filtros: ' + sessionStorage.getItem('query');
+      }
+
+      
+      
+      this.http.get<any[]>(`http://localhost:7000/productos/${this.paginaActual}/3?${sessionStorage.getItem('query')}`)
+      .subscribe(
+        (data) => {
+          this.productos.push(...data);
+          console.log(this.productos)
+          this.procesando = false;
+        },
+        (error) => {
+          console.error('Error al obtener los productos:', error);
+        }
+      );
+    
+
   }
 
   cargarMasProductos(): void {
@@ -167,38 +238,27 @@ export class PantallaProductosComponent implements OnInit{
 
   buscarCategoria(categoria: string){
     this.productos = []
-    console.log(categoria)
+    //console.log(categoria)
     this.queryCategoria = "categoriaPrinc="+categoria
+    this.procesando = true
 
+    let ciudadUsuario = "";
 
-    // if(!sessionStorage.getItem('query') || sessionStorage.getItem('query') == ''){
-    //   sessionStorage.setItem('query', queryString)
-    // }else{
-    //   let cad = sessionStorage.getItem('query');
-    //   let cads= cad!.split('&')
-    //   for(let i=0; i< cads!.length; i++){
-    //     if(cads![i].split('=')[0] == 'categoriaPrinc'){
-    //       cads[i] = ''
-    //     }
-    //   }
+    if(this.sesionIniciada){
+      ciudadUsuario = "ciudadUsuario="+this.usuario.direccion.ciudad
+      sessionStorage.setItem('query', `${this.queryCategoria}&${this.queryFiltros}&${this.queryNombre}&${ciudadUsuario}`)
+    }else{
+      sessionStorage.setItem('query', `${this.queryCategoria}&${this.queryFiltros}&${this.queryNombre}`)
+    }
+     
+    this.cadFiltros = 'Filtros: ' + sessionStorage.getItem('query');
 
-    //   console.log(cads)
-
-    //   queryString = cads + queryString
-
-    //   console.log('QUERY: '+queryString)
-
-    //   sessionStorage.setItem('query', queryString)
-    //   queryString = sessionStorage.getItem('query')!;
-    // }
-    sessionStorage.setItem('query', `${this.queryCategoria}&${this.queryFiltros}&${this.queryNombre}`)
-
-
-    this.http.get<any[]>(`http://localhost:7000/productos/${this.paginaActual}/3?${sessionStorage.getItem('query')}`) 
+    this.http.get<any[]>(`http://localhost:7000/productos/${this.paginaActual}/3?${sessionStorage.getItem('query')}`)
       .subscribe(
         (data) => {
           this.productos.push(...data);
           console.log(this.productos)
+          this.procesando = false
         },
         (error) => {
           console.error('Error al obtener los productos:', error);
@@ -212,16 +272,11 @@ export class PantallaProductosComponent implements OnInit{
     this.provincia = '';
     this.estado = '';
     this.formaEnvio = '';
+    this.precioMaximo = 99999;
+    this.precioMinimo = 0;
+    this.ordenacion = "";
+    this.queryCategoria = "";
+    sessionStorage.removeItem('filtroNombre')
   }
-  
-}
 
-export class SliderFormattingExample {
-  formatLabel(value: number): string {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
-    }
-
-    return `${value}`;
-  }
 }

@@ -41,12 +41,12 @@ export class RegistroUsuarioComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmarPassword: ['', [Validators.required, CustomValidators.passwordMatch('password')]],
       // Definir el segundo paso del formulario
-      color: [''],
+      color: ['', Validators.required],
       logo: [''], // Campo de imagen
       // Definir el tercer paso del formulario
-      provincia: [''],
-      ciudad: [''],
-      calle: [''], // Campo de dirección
+      provincia: ['', Validators.required],
+      ciudad: ['', Validators.required],
+      calle: ['', Validators.required], // Campo de dirección
     });
 
     this.formGroup.get('color')!.valueChanges.subscribe((color) => {

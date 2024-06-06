@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class VerUsuarioComponent implements OnInit {
 
-  usuario: any = {}; // Objeto donde se almacenarán los datos del usuario
+  usuario: any = null; // Objeto donde se almacenarán los datos del usuario
   productos: any[] = [];
 
   constructor(private userService: UserService, private productService: ProductService, private router: Router) { }
@@ -18,7 +18,7 @@ export class VerUsuarioComponent implements OnInit {
   ngOnInit(): void {
     // Obtener el usuarioId del sessionStorage
     const usuarioId = sessionStorage.getItem('usuarioId');
-    
+
 
     // Verificar si el usuarioId existe
     if (usuarioId) {

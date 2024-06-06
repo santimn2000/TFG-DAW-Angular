@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class PerfilInfoComponent {
 
   usuario: any = {}
+  logo: string = ""
 
   constructor(
     private router: Router,
@@ -37,6 +38,19 @@ export class PerfilInfoComponent {
           console.error('Error al obtener la información del usuario:', error);
         }
       );
+
+      this.userService.getLogoUserById(userId).subscribe(
+        response => {
+          console.log('Información del logo:', response);
+          // Aquí puedes asignar la información del usuario a propiedades del componente
+          this.logo = response.logo
+        },
+        error => {
+          console.error('Error al obtener la información del usuario:', error);
+        }
+      );
     }
   }
+
+  
 }

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import { RegistroModalComponent } from '../registro-modal/registro-modal.component';
+import { BusquedaServiceService } from 'src/app/services/busqueda-service.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -13,7 +14,9 @@ export class HeaderComponent {
 
   jwtToken!: string | null;
 
-  constructor(public dialog: MatDialog, private router: Router) { }
+  nombre: string = ""
+
+  constructor(public dialog: MatDialog, private router: Router, private busquedaService: BusquedaServiceService) { }
 
   ngOnInit(): void {
     this.jwtToken = localStorage.getItem('token');
@@ -27,8 +30,19 @@ export class HeaderComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      window.location.reload();
       this.ngOnInit();
     });
+  }
+
+  irAddProduct(){
+    console.log(localStorage.getItem('token'))
+    if(localStorage.getItem('token')){
+      console.log('Hay sesion')
+      this.router.navigate(['/addProd']);
+    }else{
+      this.openLoginModal();
+    }
   }
 
   onLoginSuccess(): void {
@@ -39,6 +53,13 @@ export class HeaderComponent {
   cerrar_sesion(): void{
     localStorage.removeItem('token');
     this.ngOnInit();
+    const currentRoute = this.router.url;
+    if (currentRoute === '/home') {
+      window.location.reload(); // Recargar la página si la ruta actual es '/home'
+    } else {
+
+      this.router.navigate(['/home']); // Navegar a '/home' si la ruta actual no es '/home'
+    }
   }
 
   irAInicio(): void {
@@ -48,7 +69,20 @@ export class HeaderComponent {
     if (currentRoute === '/home') {
       window.location.reload(); // Recargar la página si la ruta actual es '/home'
     } else {
-      
+      this.router.navigate(['/home']); // Navegar a '/home' si la ruta actual no es '/home'
+    }
+  }
+
+  buscarPorNombre(){
+    this.busquedaService.filtrar(this.nombre);
+    sessionStorage.setItem('filtroNombre', this.nombre)
+
+    const currentRoute = this.router.url;
+
+    if (currentRoute === '/home') {
+      window.location.reload(); // Recargar la página si la ruta actual es '/home'
+    } else {
+
       this.router.navigate(['/home']); // Navegar a '/home' si la ruta actual no es '/home'
     }
   }

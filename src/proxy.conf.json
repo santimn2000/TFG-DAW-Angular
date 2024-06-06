@@ -1,0 +1,12 @@
+{
+    "/socket.io": {
+      "target": "http://localhost:7000",
+      "ws": true,
+      "secure": false
+    },
+    "/chat": {
+      "target": "http://localhost:7000",
+      "secure": false
+    }
+  }
+  

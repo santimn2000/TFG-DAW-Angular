@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ProductService } from 'src/app/product.service';
+import { DialogComponent } from '../dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-producto-form',
@@ -19,7 +21,7 @@ export class AddProductoFormComponent implements OnInit {
 
   prueba: string = "Hola"
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private productoService: ProductService, private router: Router, private jwtHelper: JwtHelperService) {
+  constructor(private fb: FormBuilder, public dialog: MatDialog, private http: HttpClient, private productoService: ProductService, private router: Router, private jwtHelper: JwtHelperService) {
     this.generalForm = this.fb.group({
       productoForm: this.fb.group({
         nombre: ['', Validators.required],
@@ -38,7 +40,7 @@ export class AddProductoFormComponent implements OnInit {
   ngOnInit(): void {
     const token = localStorage.getItem('token');
 
-    if (!token || this.jwtHelper.isTokenExpired(token)) {
+    if (!token) {
       this.router.navigate(['/home']);
     }else{
       const decodedToken = this.jwtHelper.decodeToken(token);
@@ -131,7 +133,8 @@ export class AddProductoFormComponent implements OnInit {
     this.productoService.registrarProducto(form).subscribe(
       (response) => {
         console.log(response)
-        //this.generalForm.reset();
+        this.openDialog("Producto creado correctamente")
+        this.generalForm.reset();
         this.imagenesPreview = [];
         this.inputsFile = [];
 
@@ -141,6 +144,18 @@ export class AddProductoFormComponent implements OnInit {
 
       }
     );
+  }
+
+  openDialog(message: string): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '250px',
+      data: { message: message }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('El dialogo ha sido cerrado');
+      this.router.navigate(['/perfil/mis-productos'])
+    });
   }
 }
 

@@ -1,13 +1,20 @@
 <div>
-    <h2>Información del Usuario</h2>
-    <div *ngIf="usuario">
-      <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
-      <p><strong>Apellidos:</strong> {{ usuario.apellidos }}</p>
-      <p><strong>Correo:</strong> {{ usuario.correo }}</p>
-      <p><strong>Vive en:</strong> {{ usuario.direccion.ciudad }}, {{ usuario.direccion.provincia }}</p>
-
-      <!-- Otras propiedades del usuario que quieras mostrar -->
+    <div class="ml-6">
+      <h2 *ngIf="usuario">Información de {{usuario.username}}</h2>
+      <div class="flex">
+        <div *ngIf="usuario">
+          <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+          <p><strong>Apellidos:</strong> {{ usuario.apellidos }}</p>
+          <p><strong>Correo:</strong> {{ usuario.correo }}</p>
+          <p><strong>Vive en:</strong> {{ usuario.direccion.ciudad }}, {{ usuario.direccion.provincia }}</p>
+        </div>
+        <div *ngIf="logo"  class="flex justify-center ml-10">
+          <img class="w-full h-32 object-cover rounded-md" [src]="'data:image/jpeg;base64,' + logo" alt="Logo del usuario">
+        </div>
+      </div>
     </div>
+    
+    
 
     <div class="container mx-auto py-8">
         <p class="text-2xl font-bold mb-4">Productos del Usuario</p>

@@ -12,6 +12,7 @@ export class VerUsuarioComponent implements OnInit {
 
   usuario: any = null; // Objeto donde se almacenarán los datos del usuario
   productos: any[] = [];
+  logo: any;
 
   constructor(private userService: UserService, private productService: ProductService, private router: Router) { }
 
@@ -42,6 +43,17 @@ export class VerUsuarioComponent implements OnInit {
         },
         (error) => {
           console.error('Error al obtener los productos del usuario:', error);
+        }
+      );
+
+      this.userService.getLogoUserById(usuarioId).subscribe(
+        response => {
+          console.log('Información del logo:', response);
+          // Aquí puedes asignar la información del usuario a propiedades del componente
+          this.logo = response.logo
+        },
+        error => {
+          console.error('Error al obtener la información del usuario:', error);
         }
       );
 

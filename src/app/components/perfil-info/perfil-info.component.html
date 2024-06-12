@@ -24,11 +24,18 @@
       </div>
     </div>
     <div class="flex justify-center mt-6">
-      <img class="w-full h-64 object-cover rounded-md" [src]="'data:image/jpeg;base64,' + logo" alt="Logo del usuario">
-    </div>
-    <div class="flex justify-center mt-6">
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md" [routerLink]="'/perfil/modificarUsuario'">
         Modificar perfil
+      </button>
+    </div>
+    <div class="flex justify-center mt-6">
+      <img class="w-full h-64 object-cover rounded-md" [src]="'data:image/jpeg;base64,' + logo" alt="Logo del usuario">
+    </div>
+    
+    <div class="flex justify-center mt-6">
+      <input type="file" (change)="onFileSelected($event)">
+      <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md" (click)="onUploadLogo()">
+        Modificar Logo
       </button>
     </div>
   </div>

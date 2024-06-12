@@ -80,7 +80,10 @@
     <div class="w-full ml-40 mt-20 p-4 overflow-auto">
       <!-- <app-lista-prods></app-lista-prods> -->
       <div class="container mx-auto py-8">
-        <p *ngIf="cadFiltros">{{ cadFiltros }}</p>
+        <div *ngIf="cadFiltros" class="flex items-baseline space-x-1">
+          <h2>Filtros actuales: </h2> 
+          <h3  *ngFor="let filtro of cadFiltros.split('&')">{{filtro}}</h3>
+        </div>
         <p class="text-2xl font-bold mb-4">LISTA DE PRODUCTOS</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div *ngFor="let producto of productos" class="mb-4">

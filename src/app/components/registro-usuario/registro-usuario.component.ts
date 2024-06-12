@@ -80,6 +80,16 @@ export class RegistroUsuarioComponent {
     reader.readAsDataURL(file);
   }
 
+  togglePasswordVisibility(event: Event): void {
+    event.preventDefault();
+    this.hide = !this.hide;
+  }
+
+  toggleConfirmPasswordVisibility(event: Event): void {
+    event.preventDefault();
+    this.hideConfirm = !this.hideConfirm;
+  }
+
   onSubmit() {
     // Obtén los valores del formulario
     const formData = new FormData();

@@ -56,17 +56,16 @@
             </mat-form-field>
             <mat-form-field>
               <input matInput placeholder="Contraseña" formControlName="password" [type]="hide ? 'password' : 'text'">
-              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <button mat-icon-button matSuffix (click)="togglePasswordVisibility($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
-
               <mat-error *ngIf="formGroup.get('password')?.errors?.['required']">
                 La contraseña es requerida.
               </mat-error>
             </mat-form-field>
             <mat-form-field>
               <input matInput placeholder="Confirma la contraseña" formControlName="confirmarPassword" [type]="hideConfirm ? 'password' : 'text'">
-              <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
+              <button mat-icon-button matSuffix (click)="toggleConfirmPasswordVisibility($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
                 <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
               <mat-error *ngIf="formGroup.get('confirmarPassword')?.errors?.['required']">
@@ -97,6 +96,9 @@
                 <mat-option value="blue">Azul</mat-option>
                 <mat-option value="green">Verde</mat-option>
               </mat-select>
+              <mat-error *ngIf="formGroup.get('color')?.errors?.['required']">
+                El color es requerido.
+              </mat-error>
             </mat-form-field>
             <br><br>
             <input type="file" formControlName="logo" (change)="showPreview($event)">
@@ -115,8 +117,8 @@
         </div>
 
         <div>
-          <button mat-button matStepperNext type="button">Next</button>
-          <button mat-button matStepperPrevious type="button">Back</button>
+          <button mat-button matStepperPrevious type="button">Paso anterior</button>
+          <button mat-button matStepperNext type="button">Siguiente paso</button>
         </div>
       </mat-step>
 
@@ -128,19 +130,28 @@
           <mat-label>Provincia</mat-label>
           <mat-form-field>
             <input matInput formControlName="provincia" placeholder="Provincia">
+            <mat-error *ngIf="formGroup.get('provincia')?.errors?.['required']">
+              La provincia es requerida.
+            </mat-error>
           </mat-form-field>
           <mat-label>Ciudad</mat-label>
           <mat-form-field>
             <input matInput formControlName="ciudad" placeholder="Ciudad">
+            <mat-error *ngIf="formGroup.get('ciudad')?.errors?.['required']">
+              La ciudad es requerida.
+            </mat-error>
           </mat-form-field>
           <mat-label>Calle</mat-label>
           <mat-form-field>
             <input matInput formControlName="calle" placeholder="Dirección">
+            <mat-error *ngIf="formGroup.get('calle')?.errors?.['required']">
+              La calle es requerida.
+            </mat-error>
           </mat-form-field>
         </div>
         <div>
-          <button mat-button matStepperPrevious type="button">Back</button>
-          <button mat-button type="submit">Submit</button>
+          <button mat-button matStepperPrevious type="button">Paso anterior</button>
+          <button mat-button type="submit">Finalizar registro</button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>

@@ -64,7 +64,6 @@ export class HeaderComponent {
 
   irAInicio(): void {
     const currentRoute = this.router.url; // Obtener la ruta actual
-    sessionStorage.removeItem('query');
 
     if (currentRoute === '/home') {
       window.location.reload(); // Recargar la página si la ruta actual es '/home'

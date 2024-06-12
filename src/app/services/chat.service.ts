@@ -27,6 +27,7 @@ export class ChatService {
   }
 
   joinChat(chatId: string): void {
+    this.socket.emit('leaveAllChats');
     this.socket.emit('joinChat', chatId);
   }
 

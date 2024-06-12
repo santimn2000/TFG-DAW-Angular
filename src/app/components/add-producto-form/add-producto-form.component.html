@@ -7,6 +7,7 @@
             <div class="flex space-x-4">
               <mat-form-field class="flex-1">
                 <input matInput formControlName="nombre" placeholder="Nombre del producto">
+                <div *ngIf="productoForm.get('nombre')?.hasError('required') && productoForm.get('nombre')?.touched" class="text-red-500 text-xs mt-1">Campo requerido</div>
               </mat-form-field>
               <mat-form-field class="flex-2">
                 <mat-label>Categoría</mat-label>
@@ -16,6 +17,7 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
+              <div *ngIf="productoForm.get('categoria')?.hasError('required') && productoForm.get('categoria')?.touched" class="text-red-500 text-xs mt-1">Campo requerido</div>
               <mat-form-field class="flex-2">
                 <mat-label>Envío disponible</mat-label>
                 <mat-select formControlName="envio_disponible" placeholder="Seleccionar">
@@ -23,6 +25,8 @@
                   <mat-option value="1">Envio disponible</mat-option>
                 </mat-select>
               </mat-form-field>
+              <div *ngIf="productoForm.get('envio_disponible')?.hasError('required') && productoForm.get('envio_disponible')?.touched" class="text-red-500 text-xs mt-1">Campo requerido</div>
+              
               
             </div>
             <div class="flex space-x-4">
@@ -35,15 +39,18 @@
                   <mat-option value="MAL ESTADO">Mal estado</mat-option>
                 </mat-select>
               </mat-form-field>
+              <div *ngIf="productoForm.get('estado')?.hasError('required') && productoForm.get('estado')?.touched" class="text-red-500 text-xs mt-1">Campo requerido</div>
 
               <mat-form-field class="flex-2">
                 <input matInput formControlName="precio" placeholder="Precio">
               </mat-form-field>
+              <div *ngIf="productoForm.get('precio')?.hasError('required') && productoForm.get('precio')?.touched" class="text-red-500 text-xs mt-1">Campo requerido</div>
             </div>
             <div class="flex space-x-4">
               <mat-form-field class="w-3/4">
                 <textarea matInput formControlName="descripcion" placeholder="Descripción"></textarea>
               </mat-form-field>
+              <div *ngIf="productoForm.get('precio')?.hasError('required') && productoForm.get('precio')?.touched" class="text-red-500 text-xs mt-1">Campo requerido</div>
             </div>
             <div class="">
               <h4>Características</h4>

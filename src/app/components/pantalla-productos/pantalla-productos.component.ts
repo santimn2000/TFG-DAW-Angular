@@ -172,7 +172,7 @@ export class PantallaProductosComponent implements OnInit{
     this.queryFiltros = [prov, estado, envio_disponible, precioMin, precioMax, nombre, ordenacion, ciudadUsuario].filter(Boolean).join('&');
 
     sessionStorage.setItem('query', `${this.queryCategoria}&${this.queryFiltros}&${this.queryNombre}`)
-    this.cadFiltros = 'Filtros: ' + sessionStorage.getItem('query');
+    this.cadFiltros = sessionStorage.getItem('query');
     console.log(sessionStorage.getItem('query'))
 
     this.procesando = true
@@ -200,13 +200,21 @@ export class PantallaProductosComponent implements OnInit{
     
       let ciudadUsuario = ""
       console.log(this.sesionIniciada)
+
+      let nombre = ""
+      if(sessionStorage.getItem('filtroNombre')){
+        nombre = "nombre="+sessionStorage.getItem('filtroNombre')!;
+      }
+
       if(this.sesionIniciada){
         console.log(this.usuario.direccion.ciudad)
         ciudadUsuario = "ciudadUsuario="+this.usuario.direccion.ciudad;
-        sessionStorage.setItem('query', `${this.queryCategoria}&${this.queryFiltros}&${this.queryNombre}&${ciudadUsuario}`);
-        this.cadFiltros = 'Filtros: ' + sessionStorage.getItem('query');
+        
       }
 
+      sessionStorage.setItem('query', `${this.queryCategoria}&${this.queryFiltros}&${nombre}&${ciudadUsuario}`);
+        this.cadFiltros = sessionStorage.getItem('query');
+      
       
       
       this.http.get<any[]>(`http://localhost:7000/productos/${this.paginaActual}/3?${sessionStorage.getItem('query')}`)
@@ -221,7 +229,6 @@ export class PantallaProductosComponent implements OnInit{
         }
       );
     
-
   }
 
   cargarMasProductos(): void {
@@ -251,7 +258,7 @@ export class PantallaProductosComponent implements OnInit{
       sessionStorage.setItem('query', `${this.queryCategoria}&${this.queryFiltros}&${this.queryNombre}`)
     }
      
-    this.cadFiltros = 'Filtros: ' + sessionStorage.getItem('query');
+    this.cadFiltros = sessionStorage.getItem('query');
 
     this.http.get<any[]>(`http://localhost:7000/productos/${this.paginaActual}/3?${sessionStorage.getItem('query')}`)
       .subscribe(

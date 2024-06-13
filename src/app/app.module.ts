@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MenuCategoriasComponent } from './components/menu-categorias/menu-categorias.component';
 import { PantallaProductosComponent } from './components/pantalla-productos/pantalla-productos.component';
-import { ListaProdsComponent } from './components/lista-prods/lista-prods.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PerfilComponent } from './components/perfil/perfil.component';
@@ -55,7 +54,6 @@ import { CookieService } from './services/cookie.service';
     HeaderComponent,
     MenuCategoriasComponent,
     PantallaProductosComponent,
-    ListaProdsComponent,
     FooterComponent,
     PerfilComponent,
     PerfilInfoComponent,

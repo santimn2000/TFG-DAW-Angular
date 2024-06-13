@@ -18,7 +18,7 @@ import { ModificarUsuarioComponent } from './components/modificar-usuario/modifi
 const routes: Routes = [
   {path: 'home', component: PantallaProductosComponent},
   {path: 'contactanos', component: ContactanosComponent},
-  {path: 'compromiso', component: CompromisoComponent},
+  {path: 'compromiso', component: CompromisoComponent}, 
   {path: 'addProd', component: AddProductoFormComponent},
   { 
     path: 'perfil', 
@@ -29,7 +29,7 @@ const routes: Routes = [
       { path: 'mis-likes', component: MisLikesComponent },
       { path: 'chats', component: ChatsComponent },
       { path: 'modificarUsuario', component: ModificarUsuarioComponent },
-      { path: '', redirectTo: 'informacion', pathMatch: 'full' } // Ruta predeterminada dentro del perfil
+      { path: '', redirectTo: 'informacion', pathMatch: 'full' }
     ]
   },
   {path: 'infoProducto', component: VerProductoComponent},

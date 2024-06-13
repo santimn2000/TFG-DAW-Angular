@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ChatService } from 'src/app/services/chat.service';
 import { UserService } from 'src/app/services/user.service';
-import { ProductService } from 'src/app/product.service';
+import { ProductService } from 'src/app/services/product.service';
 import { InteresService } from 'src/app/services/interes.service';
 
 import { Socket, io } from 'socket.io-client';
@@ -132,34 +132,7 @@ export class ChatsComponent implements AfterViewChecked{
       this.chatService.joinChat(chatId);
     });
   
-
-    
-    
-    // Aquí podrías cargar los mensajes del usuario seleccionado
-    // this.apiService.getMessages(contact.id_usuario).subscribe((data: any[]) => {
-    //   this.messages = data;
-    // });
   }
-
-
-  // enviarMensaje(): void {
-  //   if (this.newMessage.trim() !== '') {
-
-  //     let mensaje = {
-  //       id_usuario: this.usuario1._id,
-  //       texto: this.newMessage
-  //     }
-
-  //     this.messages.push(mensaje)
-  //     // Realizar la solicitud POST al servidor
-  //     const url = 'http://localhost:7000/chat';
-  //     this.chatService.enviarMensaje(this.chat.id_interes, this.usuario1._id, this.newMessage).subscribe((data: any[]) => {
-  //       this.scrollToBottom();
-  //     });
-      
-  //   }
-  // }
-
   
   enviarMensaje() {
     if (this.newMessage.trim() !== '') {
